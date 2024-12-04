@@ -1,64 +1,83 @@
 function [estMinPos] = FibonacciM(f, x, a, b, finalArea)
-    
-    % Calculating the number of iterations needed and also the fibonacci 
-    % numbers up to n
-    n = 3;
-    fib = [1, 1];
-    while 1 %(fib(n - 1) < ((b - a)/finalArea))
-        fib(end + 1) = fib(n-1) + fib(n-2);
-
-        if(fib(n) >= ((b - a)/finalArea))
-            break;
-    n = n + 1;
-
+    tic
+    % Precompute Fibonacci numbers until the ratio (b - a) / F(n) is less than finalArea.
+    F = [1, 1];  % Initialize Fibonacci sequence
+    n = 2;
+    while (b - a) / F(end) >= finalArea
+        F = [F, F(end) + F(end - 1)];
+        n = n + 1;
     end
-    % Initialization of matrices needed to store the values of k, a and b on
-    % every iteration as well as initialization of variable k which counts
-    % the number of iterations.
+
+    % Initialize matrices to store the iteration variables
     kMatx = 0;
-    k = 1;
+    k = 0;
     aMatx = a;
     bMatx = b;
-    
-    % Initialization of x1 and x2 according to the golden section method.
-    x1 = a + (fib(n-2) / fib(n)) * (b - a);
-    x2 = a + (fib(n-1) / fib(n)) * (b - a);
-    
-    
-    while k < n
 
+    % Compute the initial points x1 and x2 based on Fibonacci sequence
+    x1 = a + (F(n-2) / F(n)) * (b - a);
+    x2 = a + (F(n-1) / F(n)) * (b - a);
+
+    % Iterative process
+    while (b - a) >= finalArea
         if subs(f, x, x1) < subs(f, x, x2)
             b = x2;
             x2 = x1;
-            x1 = a + (fib(n -k -2) / fib(n - k)) * (b - a);
+            x1 = a + (F(n - k - 3) / F(n - k - 1)) * (b - a);
         else
             a = x1;
             x1 = x2;
-            x2 = a + (fib(n -k -1) / fib(n - k)) * (b - a);
+            x2 = a + (F(n - k - 2) / F(n - k - 1)) * (b - a);
         end
 
-      % Appending the new values to the matrices
-      aMatx(end + 1) = a;
-      bMatx(end + 1) = b;
-      kMatx(end + 1) = k;
-      k = k + 1;
-
+        % Update the matrices with the new values
+        aMatx(end + 1) = a;
+        bMatx(end + 1) = b;
+        k = k + 1;
+        kMatx(end + 1) = k;
     end
 
-    % Giving the final value to the estimated minimum's position.
+    % Estimate the minimum position
     estMinPos = (a + b) / 2;
 
-    % Code to plot the graph of the positions of a and b for every iteration
-    % (when not used turn to comment)
+    % Plotting the graph (similar to the golden section method)
+    if finalArea == 0.01
+        figure(3)
+        plot(kMatx, aMatx, 'bd');
+        hold on;
+        plot(kMatx, bMatx, 'mp');
+        grid on;
+        xlabel('k');
+        ylabel('Edges');
+        legend('a', 'b');
+        title('Fibonacci Method of f3 for l = 0.01');
+        saveas(3, 'fibonacci_ab_f3', 'jpg');
+    end
 
-    plot(kMatx, aMatx, 'bd')
-    hold on;
-    plot(kMatx, bMatx, 'mp')
-    grid on
-    xlabel('k');
-    ylabel('Edges')
-    legend('a', 'b')
-    title('Fibonacci of f1 for l=0.01')
-   
+    if finalArea == 0.005
+        figure(4)
+        plot(kMatx, aMatx, 'bd');
+        hold on;
+        plot(kMatx, bMatx, 'mp');
+        grid on;
+        xlabel('k');
+        ylabel('Edges');
+        legend('a', 'b');
+        title('Fibonacci Method of f3 for l = 0.005');
+        saveas(4, 'fibonacci_abDown_f3', 'jpg');
+    end
+
+    if finalArea == 0.09
+        figure(5)
+        plot(kMatx, aMatx, 'bd');
+        hold on;
+        plot(kMatx, bMatx, 'mp');
+        grid on;
+        xlabel('k');
+        ylabel('Edges');
+        legend('a', 'b');
+        title('Fibonacci Method of f3 for l = 0.09');
+        saveas(5, 'fibonacci_abUp_f3', 'jpg');
+    end
+    toc
 end
-

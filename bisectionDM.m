@@ -35,13 +35,43 @@ tic
     % Code to plot the graph of the positions of a and b for every iteration
     % (when not used turn to comment)
 
-    plot(kMatx, aMatx, 'bd')
-    hold on;
-    plot(kMatx, bMatx, 'mp')
-    grid on
-    xlabel('k');
-    ylabel('Edges')
-    legend('a', 'b')
-    title('Bisection with derivative of f3 for l=0.005')
+    if finalArea == 0.01
+        figure(3)
+        plot(kMatx, aMatx, 'bd');
+        hold on;
+        plot(kMatx, bMatx, 'mp');
+        grid on;
+        xlabel('k');
+        ylabel('Edges');
+        legend('a', 'b');
+        title('Bisection w/Derivative Method of f3 for l = 0.01');
+        saveas(3,'Dbisection_ab_f3','jpg')
+    end
+
+    if finalArea == 0.005
+        figure(4)
+        plot(kMatx, aMatx, 'bd');
+        hold on;
+        plot(kMatx, bMatx, 'mp');
+        grid on;
+        xlabel('k');
+        ylabel('Edges');
+        legend('a', 'b');
+        title('Bisection w/Derivative Method of f3 for l = 0.005');
+        saveas(4,'Dbisection_abDown_f3','jpg')
+    end
+
+    if finalArea == 0.09
+        figure(5)
+        plot(kMatx, aMatx, 'bd');
+        hold on;
+        plot(kMatx, bMatx, 'mp');
+        grid on;
+        xlabel('k');
+        ylabel('Edges');
+        legend('a', 'b');
+        title('Bisection w/Derivative Method of f3 for l = 0.09');
+        saveas(5,'Dbisection_abUp_f3','jpg')
+    end
 toc
 end
